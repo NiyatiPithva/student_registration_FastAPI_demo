@@ -1,0 +1,39 @@
+# 🔹 Python cache
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# 🔹 Virtual environment
+venv/
+env/
+ENV/
+
+# 🔹 Environment variables (IMPORTANT)
+.env
+
+# 🔹 Database files (if any local)
+*.db
+*.sqlite3
+
+# 🔹 Logs
+*.log
+
+# 🔹 OS files
+.DS_Store
+Thumbs.db
+
+# 🔹 IDE files
+.vscode/
+.idea/
+
+# 🔹 Pytest / coverage (optional)
+.pytest_cache/
+.coverage
+htmlcov/
+
+# 🔹 Migrations (optional - if using Alembic later)
+alembic/versions/*.pyc
+
+# 🔹 Secrets / configs
+config.py

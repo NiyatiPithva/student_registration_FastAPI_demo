@@ -1,0 +1,82 @@
+/* ============================================================
+   ROOT VARIABLES
+   ============================================================ */
+:root {
+  --background: #0f0e17;
+  --foreground: #e4e4ff;
+  --primary: #e4e4ff;
+  --secondary: #8b8ba7;
+  --muted: #6e6e8a;
+  --muted-foreground: #a7a9be;
+  --accent: #7f5af0;
+  --primary-light: #9375f8;
+  --card: #16161d;
+  --card-foreground: #f5f5ff;
+  --border: #2a2b3a;
+  --input: #2a2b3a;
+  --destructive: #ff5c5c;
+  --radius: 0.5rem;
+  --font-sans: "Rubik", sans-serif;
+  --font-display: "Space Grotesk", sans-serif;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background-color: var(--background);
+    color: var(--foreground);
+    font-family: var(--font-sans);
+    font-display: var(--font-display);
+}
+
+.landingPage {
+    height: 100vh;
+    display: flex;
+    /* flex-wrap: wrap; */
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+.mainHead span{
+    font-size: 3rem;
+    font-weight: 800;
+    text-transform: capitalize;
+}
+.subHead {
+
+    max-width: 800px;
+    color: #a7a9be;
+    font-weight: 200;
+    line-height: 1.5;
+}
+
+.btn {
+    margin-top: 0.9rem;
+    background-color: var(--accent);
+    /* width: 12vw; */
+    /* height: 5vh; */
+    border-radius: 0.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+.btn button {
+    border: none;
+    background: none;
+    color: var(--foreground);    
+    font-size: 1rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    padding: 1rem;
+}
+.btn:hover {
+    background-color: var(--background);
+    border: 1px solid var(--accent);
+
+}

@@ -3,9 +3,16 @@ from sqlalchemy.orm import Session
 from database import SessionLocal
 import models
 import schemas
+from fastapi.staticfiles import StaticFiles
+from fastapi.templating import Jinja2Templates
+from fastapi import Request
 
 app = FastAPI()
 
+
+app.mount("/static", StaticFiles(directory="static"), name="static")
+
+templates = Jinja2Templates(directory="templates")
 # Dependency Injection
 def get_db():
 
@@ -15,6 +22,13 @@ def get_db():
     finally:
         db.close()
 
+@app.get("/")
+async def home(request: Request):
+    return templates.TemplateResponse(
+        request=request,
+        name="index.html",
+        context={}
+    )
 # create student
 @app.post("/students/")
 def create_studnets(student : schemas.StudentSchema, db: Session = Depends(get_db)):

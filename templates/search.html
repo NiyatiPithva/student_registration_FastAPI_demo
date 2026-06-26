@@ -2,8 +2,8 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Students</title>
+
+    <title>Search Student</title>
 
     <link rel="stylesheet" href="/static/css/styles.css" />
   </head>
@@ -17,9 +17,25 @@
 
       <div class="line"></div>
 
-      <div class="studentHeading">
-        <span>Students List</span>
+      <div class="studentHeading">Search Student</div>
+
+      <div class="searchContainer">
+        <form action="/students/search" method="get">
+          <div class="inputFields">
+            <input
+              type="number"
+              name="id"
+              placeholder="Enter Student ID"
+              required
+            />
+          </div>
+          <div class="btn">
+          <button  type="submit">Search</button>
+          </div>
+        </form>
       </div>
+
+      {% if student %}
 
       <div class="studTable">
         <table border="1">
@@ -28,35 +44,22 @@
             <th>Name</th>
             <th>Email</th>
             <th>Course</th>
-            <th>Action</th>
           </tr>
-
-          {% for student in students %}
 
           <tr>
             <td>{{student.id}}</td>
             <td>{{student.name}}</td>
             <td>{{student.email}}</td>
             <td>{{student.course}}</td>
-
-            <td>
-              <a href="/students/edit/{{student.id}}">
-                <button>Edit</button>
-              </a>
-
-              <form
-                action="/students/delete/{{student.id}}"
-                method="post"
-                style="display: inline"
-              >
-                <button type="submit">Delete</button>
-              </form>
-            </td>
           </tr>
-
-          {% endfor %}
         </table>
       </div>
+
+      {% elif request.query_params.get('id') %}
+
+      <h2>No Student Found</h2>
+
+      {% endif %}
     </div>
   </body>
 </html>

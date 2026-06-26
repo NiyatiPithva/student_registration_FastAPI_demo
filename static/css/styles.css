@@ -48,7 +48,7 @@ body {
     text-transform: capitalize;
 }
 .subHead {
-
+    text-transform: capitalize;
     max-width: 800px;
     color: #a7a9be;
     font-weight: 200;
@@ -72,12 +72,84 @@ body {
     color: var(--foreground);    
     font-size: 1rem;
     font-weight: 700;
-    text-transform: uppercase;
+    /* text-transform: capitalize; */
     padding: 1rem;
     cursor: pointer;
 }
 .btn:hover {
     background-color: var(--background);
     border: 1px solid var(--accent);
+}
 
+.studentsConatiner {
+    width: 100%;
+    margin-top: 1rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.registerConatiner {
+    display: flex;
+    align-items: center;
+    border-radius: 5px;
+    justify-content: center;
+    padding: 0.9rem;
+    flex-direction: column;
+    width: 50%;
+    border: 1px dashed var(--muted-foreground);
+}
+
+.inputFields{
+    width: 60%;
+    
+}
+.inputFields input {
+    display: flex;
+    width: 400px;
+    padding: 0.5rem;
+    margin-bottom: 0.5rem;
+    border-radius: 5px;
+}
+
+.inputFields input:focus {
+    border: #7f5af0;
+}
+.studentHeading {
+    margin-top: 15px;
+    font-size: 2rem;
+    font-weight: 800;
+}
+
+.nav_links {
+    display: flex;
+    gap: 25px;
+    padding: 10px;
+    
+
+}
+.line {
+    margin-bottom: 20px;
+    width: 100%;
+    height: 1px;
+    background-color: var(--muted-foreground);
+}
+.studTable {
+    margin-top: 1rem;
+}
+
+table {
+    border: 2px;
+}
+
+.studTable th,td{
+    padding: 0.8rem;
+}
+
+.serachbtn {
+    display: flex;
+    width: 100%;
+    padding: 15px;
+    
 }

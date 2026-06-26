@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+
+    <title>Edit Student</title>
+
+    <link rel="stylesheet" href="/static/css/styles.css" />
+  </head>
+  <body>
+    <div class="studentsConatiner">
+      <div class="nav_links">
+        <a href="/students/">Students</a>
+
+        <a href="/register">Register</a>
+
+        <a href="/search">Search</a>
+      </div>
+
+      <div class="line"></div>
+
+      <div class="studentHeading">Update Student</div>
+
+      <div class="registerConatiner">
+        <form action="/students/update/{{student.id}}" method="post">
+          <div class="inputFields">
+            <input type="text" name="name" value="{{student.name}}" required />
+          </div>
+
+          <div class="inputFields">
+            <input
+              type="email"
+              name="email"
+              value="{{student.email}}"
+              required
+            />
+          </div>
+
+          <div class="inputFields">
+            <input
+              type="text"
+              name="course"
+              value="{{student.course}}"
+              required
+            />
+          </div>
+
+          <div class="btn">
+            <button type="submit">Update Student</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </body>
+</html>

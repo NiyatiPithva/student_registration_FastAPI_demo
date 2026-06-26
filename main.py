@@ -1,77 +1,227 @@
-from fastapi import FastAPI, Depends
-from sqlalchemy.orm import Session
-from database import SessionLocal
-import models
-import schemas
+from fastapi import FastAPI, Depends, Request, Form
+from fastapi.responses import RedirectResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
-from fastapi import Request
+from sqlalchemy.orm import Session
+
+from database import SessionLocal
+import models
 
 app = FastAPI()
 
-
+# Static Files
 app.mount("/static", StaticFiles(directory="static"), name="static")
 
+# Templates
 templates = Jinja2Templates(directory="templates")
-# Dependency Injection
-def get_db():
 
+
+# -----------------------------
+# Database Dependency
+# -----------------------------
+def get_db():
     db = SessionLocal()
     try:
         yield db
     finally:
         db.close()
 
+
+# -----------------------------
+# Home Page
+# -----------------------------
 @app.get("/")
-async def home(request: Request):
+def home(request: Request):
     return templates.TemplateResponse(
         request=request,
         name="index.html",
         context={}
     )
-# create student
-@app.post("/students/")
-def create_studnets(student : schemas.StudentSchema, db: Session = Depends(get_db)):
-    new_student = models.Student(**student.dict())
-    print("-->>",new_student)
-    db.add(new_student)
-    db.commit()
-    db.refresh(new_student)
-    return new_student
 
-# Get All Students
+
+# -----------------------------
+# Show All Students
+# -----------------------------
 @app.get("/students/")
-def get_all_studnets(db: Session = Depends(get_db)):
-    return db.query(models.Student).all()
+def get_all_students(
+    request: Request,
+    db: Session = Depends(get_db)
+):
+    students = db.query(models.Student).all()
 
-# Get Student by ID
+    return templates.TemplateResponse(
+        request=request,
+        name="students.html",
+        context={
+            "students": students
+        }
+    )
+
+
+# -----------------------------
+# Register Page
+# -----------------------------
+@app.get("/register")
+def register_page(request: Request):
+    return templates.TemplateResponse(
+        request=request,
+        name="register.html",
+        context={}
+    )
+
+
+# -----------------------------
+# Register Student
+# -----------------------------
+@app.post("/students/")
+def create_student(
+    name: str = Form(...),
+    email: str = Form(...),
+    course: str = Form(...),
+    db: Session = Depends(get_db)
+):
+
+    student = models.Student(
+        name=name,
+        email=email,
+        course=course
+    )
+
+    db.add(student)
+    db.commit()
+    db.refresh(student)
+
+    return RedirectResponse(
+        url="/students/",
+        status_code=303
+    )
+
+
+# -----------------------------
+# Search Page
+# -----------------------------
+@app.get("/search")
+def search_page(request: Request):
+    return templates.TemplateResponse(
+        request=request,
+        name="search.html",
+        context={}
+    )
+
+
+# -----------------------------
+# Search Student
+# -----------------------------
+@app.get("/students/search")
+def search_student(
+    request: Request,
+    id: int,
+    db: Session = Depends(get_db)
+):
+
+    student = db.query(models.Student).filter(
+        models.Student.id == id
+    ).first()
+
+    return templates.TemplateResponse(
+        request=request,
+        name="search.html",
+        context={
+            "student": student
+        }
+    )
+
+
+# -----------------------------
+# Edit Page
+# -----------------------------
+@app.get("/students/edit/{id}")
+def edit_student(
+    id: int,
+    request: Request,
+    db: Session = Depends(get_db)
+):
+
+    student = db.query(models.Student).filter(
+        models.Student.id == id
+    ).first()
+
+    if student is None:
+        return RedirectResponse(
+            url="/students/",
+            status_code=303
+        )
+
+    return templates.TemplateResponse(
+        request=request,
+        name="edit.html",
+        context={
+            "student": student
+        }
+    )
+
+
+# -----------------------------
+# Update Student
+# -----------------------------
+@app.post("/students/update/{id}")
+def update_student(
+    id: int,
+    name: str = Form(...),
+    email: str = Form(...),
+    course: str = Form(...),
+    db: Session = Depends(get_db)
+):
+
+    student = db.query(models.Student).filter(
+        models.Student.id == id
+    ).first()
+
+    if student:
+        student.name = name
+        student.email = email
+        student.course = course
+
+        db.commit()
+        db.refresh(student)
+
+    return RedirectResponse(
+        url="/students/",
+        status_code=303
+    )
+
+
+# -----------------------------
+# Delete Student
+# -----------------------------
+@app.post("/students/delete/{id}")
+def delete_student(
+    id: int,
+    db: Session = Depends(get_db)
+):
+
+    student = db.query(models.Student).filter(
+        models.Student.id == id
+    ).first()
+
+    if student:
+        db.delete(student)
+        db.commit()
+
+    return RedirectResponse(
+        url="/students/",
+        status_code=303
+    )
+
+
+# -----------------------------
+# JSON API (Optional)
+# -----------------------------
 @app.get("/students/{id}")
-def get_by_id(id: int, db: Session = Depends(get_db)):
-    return db.query(models.Student).filter(models.Student.id == id).first()
-
-
-# delete student
-@app.delete("/students/{id}")
-def delete_student(id: int,db: Session = Depends(get_db)):
-    studnet = db.query(models.Student).filter(models.Student.id == id).first()
-    print("student deleted..",studnet)
-    if studnet:
-        db.delete(studnet)
-        db.commit()
-        return {"deleted student" : studnet}
-    return "student not found"
-
-# update
-@app.put("/students/{id}")
-def update_student(id: int, student: schemas.StudentSchema,db: Session = Depends(get_db)):
-    updatedStudent = db.query(models.Student).filter(models.Student.id == id).first()
-
-    if updatedStudent:
-        updatedStudent.name = student.name
-        updatedStudent.course = student.course
-        updatedStudent.email = student.email
-        db.commit()
-        db.refresh(updatedStudent)
-        return updatedStudent
-    else:
-        return "No student found"
+def get_student(
+    id: int,
+    db: Session = Depends(get_db)
+):
+    return db.query(models.Student).filter(
+        models.Student.id == id
+    ).first()

@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Register Student</title>
+
+    <link rel="stylesheet" href="/static/css/styles.css" />
+  </head>
+  <body>
+    <div class="studentsConatiner">
+      <div class="nav_links">
+        <a href="/students/">Students</a>
+        <a href="/register">Register</a>
+        <a href="/search">Search</a>
+      </div>
+
+      <div class="line"></div>
+
+      <div class="studentHeading">Register Student</div>
+
+      <div class="registerConatiner">
+        <form method="post" action="/students/">
+          <div class="inputFields">
+            <input type="text" name="name" placeholder="Enter Name" required />
+          </div>
+
+          <div class="inputFields">
+            <input
+              type="email"
+              name="email"
+              placeholder="Enter Email"
+              required
+            />
+          </div>
+
+          <div class="inputFields">
+            <input
+              type="text"
+              name="course"
+              placeholder="Enter Course"
+              required
+            />
+          </div>
+
+          <div class="btn">
+            <button type="submit">Register</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </body>
+</html>
